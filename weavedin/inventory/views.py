@@ -369,7 +369,7 @@ def get_user_actions(request, user=None):
     try:
         request_dict['received_data'] = request.GET
         request_dict['optional_params'] = [
-            ('user_id', 'int'), ('date', 'datetime')]
+            ('log_date', 'date')]
         user_dict = utilities.fetch_request_params(request_dict)
         user_dict['user'] = user
 
@@ -378,4 +378,20 @@ def get_user_actions(request, user=None):
     except (
             KeyError, ValueError, InvalidUserActionParameters) as e:
         data = error_response(e)
+    return data
+
+
+@authenticate_user
+def get_properties(request, user=None):
+    """For getting all properties."""
+    request_dict = {}
+    try:
+        request_dict['received_data'] = request.GET
+        property_dict = utilities.fetch_request_params(request_dict)
+
+        property_data = inventory_bll.get_property_data(property_dict)
+        data = success_response(property_data)
+    except (KeyError, ValueError) as e:
+        data = error_response(e)
+
     return data

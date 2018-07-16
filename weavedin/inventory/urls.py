@@ -31,4 +31,6 @@ urlpatterns = [
         views.delete_variant_property),
 
     url(r'^user/actions/', views.get_user_actions),
+
+    url(r'^properties/get/', views.get_properties),
 ]

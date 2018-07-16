@@ -343,7 +343,6 @@ def delete_variant_property(variant_dict):
 
 def get_user_actions(user_dict):
     """For getting user actions."""
-    user_dict['filter'] = Q()
     user_data = {}
     user_data['actions'] = []
 
@@ -362,3 +361,19 @@ def get_user_actions(user_dict):
         user_data['actions'].append(user_action_details)
 
     return user_data
+
+
+def get_property_data(property_dict):
+    """For getting property data."""
+    properties = inventory_dal.get_all_properties()
+    property_data = {}
+    property_data['properties'] = []
+
+    for property_obj in properties:
+        property_dict = {
+            'property_id': property_obj.id,
+            'property_name': property_obj.name
+        }
+        property_data['properties'].append(property_dict)
+
+    return property_data

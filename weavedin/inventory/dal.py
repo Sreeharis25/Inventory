@@ -1,6 +1,7 @@
 """Dal for inventory app."""
 from uuid import uuid4
 import datetime
+from datetime import timedelta
 
 from .models import Customuser
 from .models import Brand
@@ -348,8 +349,20 @@ def delete_variant_property_obj(variant_property):
 def filter_user_actions(user_dict):
     """For filtering user actions."""
     try:
-        user_actions = Action.query.all()
+        if 'log_date' in user_dict.keys():
+            user_actions = Action.query.filter(
+                Action.edited_time < user_dict['log_date'] + timedelta(
+                    days=1), Action.edited_time >= user_dict['log_date']).all()
+        else:
+            user_actions = Action.query.all()
     except:
         raise InvalidUserActionParameters
 
     return user_actions
+
+
+def get_all_properties():
+    """For getting all properties."""
+    properties = Property.query.all()
+
+    return properties
